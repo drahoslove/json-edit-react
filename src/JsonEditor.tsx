@@ -34,6 +34,7 @@ import { ValueNodeWrapper } from './ValueNodeWrapper'
 
 import './style.css'
 import { getCustomNode } from './CustomNode'
+import { getCustomKey } from './CustomKey'
 
 const Editor: React.FC<JsonEditorProps> = ({
   data: srcData,
@@ -77,6 +78,7 @@ const Editor: React.FC<JsonEditorProps> = ({
   id,
   customText = {},
   customNodeDefinitions = [],
+  customKeyDefinitions = [],
   customButtons = [],
   jsonParse = JSON.parse,
   jsonStringify = (data, replacer) => JSON.stringify(data, replacer, 2),
@@ -341,6 +343,7 @@ const Editor: React.FC<JsonEditorProps> = ({
   )
 
   const customNodeData = getCustomNode(customNodeDefinitions, nodeData)
+  const customKeyData = getCustomKey(customKeyDefinitions, nodeData)
 
   const otherProps = {
     mainContainerRef: mainContainerRef as React.MutableRefObject<Element>,
@@ -379,6 +382,8 @@ const Editor: React.FC<JsonEditorProps> = ({
     translate,
     customNodeDefinitions,
     customNodeData,
+    customKeyDefinitions,
+    customKeyData,
     customButtons,
     parentData: null,
     jsonParse: jsonParseReplacement,

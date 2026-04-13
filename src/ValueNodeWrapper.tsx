@@ -315,6 +315,8 @@ export const ValueNodeWrapper: React.FC<ValueNodeProps> = (props) => {
     getNextOrPrevious: (type: 'next' | 'prev') =>
       getNextOrPrevious(nodeData.fullData, path, type, sort),
     emptyStringKey,
+    nodeData,
+    customKeyData: props.customKeyData,
   }
 
   const ValueComponent = showCustomNode ? (

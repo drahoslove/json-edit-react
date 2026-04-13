@@ -28,6 +28,8 @@ export {
   type ValueNodeProps,
   type CustomNodeProps,
   type CustomNodeDefinition,
+  type CustomKeyProps,
+  type CustomKeyDefinition,
   type CustomTextDefinitions,
   type CustomTextFunction,
   type Theme,

@@ -3,6 +3,7 @@ import { type Options as AssignOptions } from 'object-property-assigner'
 import { type LocalisedStrings, type TranslateFunction } from './localisation'
 import { type ExternalTriggers } from './hooks'
 import { CustomNodeData } from './CustomNode'
+import { CustomKeyData } from './CustomKey'
 
 export type JsonData = Record<string, unknown> | Array<unknown> | unknown
 
@@ -51,6 +52,8 @@ export interface JsonEditorProps {
   // enforcing consistency between the component and the definition that uses it
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customNodeDefinitions?: CustomNodeDefinition<Record<string, any>, Record<string, any>>[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customKeyDefinitions?: CustomKeyDefinition<Record<string, any>>[]
   customText?: CustomTextDefinitions
   customButtons?: CustomButtonDefinition[]
   jsonParse?: (input: string, reviver?: (key: string, value: string) => unknown) => JsonData
@@ -278,6 +281,8 @@ interface BaseNodeProps {
   translate: TranslateFunction
   customNodeDefinitions: CustomNodeDefinition[]
   customNodeData: CustomNodeData
+  customKeyDefinitions: CustomKeyDefinition[]
+  customKeyData: CustomKeyData
   customButtons: CustomButtonDefinition[]
   errorMessageTimeout: number
   keyboardControls: KeyboardControlsFull
@@ -365,6 +370,26 @@ export interface CustomNodeDefinition<T = Record<string, unknown>, U = Record<st
   // For JSON stringify/parse
   stringifyReplacer?: (value: unknown) => unknown
   parseReviver?: (stringified: string) => unknown
+}
+
+export interface CustomKeyProps<T = Record<string, unknown>> {
+  nodeData: NodeData
+  name: string | number
+  path: CollectionKey[]
+  value: JsonData
+  styles: React.CSSProperties
+  isEditingKey: boolean
+  canEditKey: boolean
+  handleEditKey: (newKey: string) => void
+  handleClick?: (e: React.MouseEvent) => void
+  customKeyProps?: T
+}
+
+export interface CustomKeyDefinition<T = Record<string, unknown>> {
+  condition: FilterFunction
+  element: React.FC<CustomKeyProps<T>>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customKeyProps?: T
 }
 
 export type CustomTextDefinitions = Partial<{ [key in keyof LocalisedStrings]: CustomTextFunction }>

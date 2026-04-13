@@ -4,7 +4,13 @@
 
 import React from 'react'
 import { useTreeState } from './contexts'
-import { type KeyboardControlsFull, type CollectionKey, type ValueData } from './types'
+import {
+  type KeyboardControlsFull,
+  type CollectionKey,
+  type ValueData,
+  type NodeData,
+} from './types'
+import { type CustomKeyData } from './CustomKey'
 
 interface KeyDisplayProps {
   canEditKey: boolean
@@ -24,6 +30,8 @@ interface KeyDisplayProps {
   styles: React.CSSProperties
   getNextOrPrevious: (type: 'next' | 'prev') => CollectionKey[] | null
   emptyStringKey: string | null
+  nodeData?: NodeData
+  customKeyData?: CustomKeyData
 }
 
 export const KeyDisplay: React.FC<KeyDisplayProps> = ({
@@ -41,12 +49,32 @@ export const KeyDisplay: React.FC<KeyDisplayProps> = ({
   styles,
   getNextOrPrevious,
   emptyStringKey,
+  nodeData,
+  customKeyData,
 }) => {
   const { setCurrentlyEditingElement } = useTreeState()
 
   const displayKey = typeof name === 'number' ? String(name + (arrayIndexFromOne ? 1 : 0)) : name
 
-  if (!isEditingKey)
+  if (!isEditingKey) {
+    if (customKeyData?.CustomKey && nodeData) {
+      const { CustomKey, customKeyProps } = customKeyData
+      return (
+        <CustomKey
+          nodeData={nodeData}
+          name={name}
+          path={path}
+          value={nodeData.value}
+          styles={styles}
+          isEditingKey={false}
+          canEditKey={canEditKey}
+          handleEditKey={handleEditKey}
+          handleClick={handleClick}
+          customKeyProps={customKeyProps}
+        />
+      )
+    }
+
     return (
       <span
         className="jer-key-text"
@@ -62,6 +90,7 @@ export const KeyDisplay: React.FC<KeyDisplayProps> = ({
         {displayKey !== '' || emptyStringKey ? <span className="jer-key-colon">:</span> : null}
       </span>
     )
+  }
 
   return (
     <input
