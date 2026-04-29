@@ -27,7 +27,6 @@
     "dev": "cd demo && yarn && yarn dev",
     "demo": "cd demo && yarn && yarn start",
     "demo:package": "yarn build-package && cd demo && yarn && yarn start:package",
-    "prepare": "rollup -c && rm -R build/dts && node ./scripts/cleanBuildTypes.cjs",
     "prebuild": "yarn lint",
     "build": "rollup -c && rm -R build/dts",
     "postbuild": "node ./scripts/cleanBuildTypes.cjs",
